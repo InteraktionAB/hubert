@@ -16,7 +16,7 @@ def encode_dataset(args):
     print(f"Encoding dataset at {args.in_dir}")
     for in_path in tqdm(list(args.in_dir.rglob(f"*{args.extension}"))):
         wav, sr = torchaudio.load(in_path)
-        if len(wav.shape) > 2:
+        if wav.shape[0] != 1:
             wav = torch.mean(wav, dim=0, keepdim=True)
         wav = resample(wav, sr, 16000)
         wav = wav.unsqueeze(0).cuda()
